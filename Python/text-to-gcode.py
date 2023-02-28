@@ -1,12 +1,21 @@
 import os
 
-# Load the text file
-filename = input("Enter the name of the text file: ")
-if not os.path.isfile(filename):
-    print("The file does not exist.")
+# Get a list of available text files
+path = "."
+text_files = [file for file in os.listdir(path) if file.endswith(".txt")]
+if not text_files:
+    print("There are no text files in the current directory.")
     exit()
-with open(filename, "r") as file:
-    text = file.read()
+
+# Display a menu of available text files
+print("Available text files:")
+for i, file in enumerate(text_files):
+    print(f"{i+1}. {file}")
+file_choice = int(input("Select a file: "))
+if file_choice not in range(1, len(text_files)+1):
+    print("Invalid input.")
+    exit()
+filename = text_files[file_choice-1]
 
 # Ask for motor speed
 speed = float(input("Enter the motor speed: "))
@@ -25,14 +34,20 @@ font = font_choices[font_choice-1]
 # Ask for font size
 font_size = int(input("Enter the font size: "))
 
+# Load the selected text file
+with open(filename, "r") as file:
+    text = file.read()
+
 # Generate the G-code
 lines = text.split("\n")
 gcode = []
 for line in lines:
     for word in line.split():
-        gcode.append(f"G1 X{ord(word)} Y{ord(word)} Z1 F{speed}")
-        gcode.append(f"G1 Z0")
+        for letter in word:
+            gcode.append(f"G1 X{ord(letter)} Y{ord(letter)} Z1 F{speed}")
+            gcode.append(f"G1 Z0")
 gcode = "\n".join(gcode)
+
 
 # Output the G-code
 print("Generated G-code:")
