@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import hashlib
 
 text = input("Gib einen Text ein: ")
