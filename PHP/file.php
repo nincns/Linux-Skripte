@@ -95,7 +95,7 @@ if (isset($_POST['create_dir'])) {
   } else {
     $new_dir = rtrim($path, '/') . '/' . $new_dir;
     if (file_exists($new_dir) && is_dir($new_dir)) {
-      #echo "Ordner konnte nicht erstellt werden: Ordner existiert bereits."; #noch Fehler wird angezeigt obwohl Ordner erstellt wird
+      echo "Ordner konnte nicht erstellt werden: Ordner existiert bereits.";
     } else if (mkdir($new_dir, 0777)) {
       echo "Ordner erfolgreich erstellt.";
       header("Location: " . $_SERVER['REQUEST_URI'] . "&created"); // Hinzufügen von GET-Parameter für die Aktualisierung der Seite
@@ -110,10 +110,3 @@ echo "</td></tr>"; // Ende der Tabellenzelle für den Dateiupload
 ?>
 
 </table>
-
-<script>
-  // Aktualisierung der Seite nach dem Upload oder Erstellung eines neuen Ordners
-  if(window.location.search.indexOf('uploaded') > -1 || window.location.search.indexOf('created') > -1) {
-    window.location.href = window.location.pathname;
-  }
-</script>
