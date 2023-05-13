@@ -3,7 +3,7 @@ import subprocess
 import time
 from datetime import datetime, timedelta
 
-export_dir = "/home/shentsch/log/autoupdate"
+export_dir = "/path/to/log/autoupdate"
 update_time = "12:40"  # Format HH:MM, 24-Stunden-Format
 
 def calculate_wait_time(target_time_str):
