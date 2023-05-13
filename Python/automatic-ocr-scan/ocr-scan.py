@@ -7,21 +7,24 @@ from watchdog.events import FileSystemEventHandler
 from shutil import move
 from datetime import datetime
 
+# Ordnerpfade als Variablen festlegen
+folder_to_track = './import'
+folder_destination = './archive'
+folder_new_scan = './new-scan'
+
 class MyHandler(FileSystemEventHandler):
     def on_modified(self, event):
         for filename in os.listdir(folder_to_track):
             if filename.endswith(".png") or filename.endswith(".tif"):
-                src = folder_to_track + "/" + filename
-                new_destination = folder_destination + "/" + filename
+                src = os.path.join(folder_to_track, filename)
+                new_destination = os.path.join(folder_destination, filename)
                 img = Image.open(src)
                 text = pytesseract.image_to_string(img, lang='eng')
                 timestamp = datetime.now().strftime("%Y%m%d-%H%M%S")
-                with open(f"./new-scan/ocr_output_{timestamp}.rtf", "w") as f:
+                with open(os.path.join(folder_new_scan, f"ocr_output_{timestamp}.rtf"), "w") as f:
                     f.write(text)
                 move(src, new_destination)
 
-folder_to_track = './import'
-folder_destination = './archive'
 event_handler = MyHandler()
 observer = Observer()
 observer.schedule(event_handler, folder_to_track, recursive=True)
