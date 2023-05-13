@@ -11,8 +11,11 @@ def get_cpu_temperature():
 
 def get_gpu_temperature():
     # Note: This method might not work for all GPU makes and models
-    res = os.popen('sensors | grep -i "edge"').readline().strip().split()[1].replace("+","").replace("°C","")
-    return res
+    res = os.popen('sensors | grep -i "edge"').readline().strip().split()
+    if len(res) < 2:
+        return "N/A"
+    return res[1].replace("+","").replace("°C","")
+
 
 def get_host_uptime():
     uptime = os.popen('uptime -s').read().strip()
