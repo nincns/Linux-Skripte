@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# Variablen definieren
-BENUTZERNAME=""
-PASSWORT=""
-SSH_KEY=""
+# Nach Variablen fragen
+read -p "Geben Sie den Benutzernamen ein: " BENUTZERNAME
+read -s -p "Geben Sie das Passwort ein: " PASSWORT
+read -p "Geben Sie den SSH-Schlüssel ein: " SSH_KEY
 
 # Benutzeraccount erstellen
 useradd -m "$BENUTZERNAME"
@@ -24,4 +24,3 @@ chmod 600 /home/"$BENUTZERNAME"/.ssh/authorized_keys
 
 # Besitzer des SSH-Verzeichnisses ändern
 chown -R "$BENUTZERNAME":"$BENUTZERNAME" /home/"$BENUTZERNAME"/.ssh
-
