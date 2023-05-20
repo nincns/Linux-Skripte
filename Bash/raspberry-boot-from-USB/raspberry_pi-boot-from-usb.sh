@@ -1,9 +1,22 @@
 #!/bin/bash
 
-echo "Bitte wählen Sie den zu verwendenden USB-Stick aus: "
-lsblk #zeigt alle angeschlossenen Speichermedien
+valid_disk=0
 
-read selected_disk #bittet den Benutzer, eine Auswahl zu treffen
+while [ $valid_disk -eq 0 ]
+do
+  echo "Bitte wählen Sie den zu verwendenden USB-Stick aus: "
+  lsblk #zeigt alle angeschlossenen Speichermedien
+
+  read selected_disk #bittet den Benutzer, eine Auswahl zu treffen
+
+  # Überprüfen, ob das ausgewählte Laufwerk gültig ist und Partitionen hat
+  if lsblk | grep -q "$selected_disk[1-9]"
+  then
+    valid_disk=1
+  else
+    echo "Ungültige Auswahl. Bitte wählen Sie ein Laufwerk mit mindestens einer Partition aus."
+  fi
+done
 
 echo "Das ausgewählte Laufwerk ist: $selected_disk"
 
