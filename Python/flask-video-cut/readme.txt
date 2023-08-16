@@ -2,7 +2,7 @@
 
 Flask Video Cutter is a sophisticated video control and editing web application built on top of Flask. It allows users to control video playback, skip through videos, mark sections for cutting, and manage a collection of video files.
 
-![Application Screenshot](Python/flask-video-cut/screenshots/Screenshot 2023-08-16 at 20.21.10.png)
+![Application Screenshot](https://github.com/nincns/Linux-Skripte/blob/main/Python/flask-video-cut/screenshots/Screenshot%202023-08-16%20at%2020.21.10.png)
 
 ## Table of Contents
 
