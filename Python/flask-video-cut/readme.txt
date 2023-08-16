@@ -1,6 +1,3 @@
-Of course, here's the `README.md` content presented as a code block:
-
-```markdown
 # Flask Video Cutter
 
 Flask Video Cutter is a sophisticated video control and editing web application built on top of Flask. It allows users to control video playback, skip through videos, mark sections for cutting, and manage a collection of video files.
