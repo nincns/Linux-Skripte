@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Video Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+        crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="{{url_for('static', filename='script.js')}}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        .custom-tooltip {
+            --bs-tooltip-bg: var(--bs-secondary);
+            --bs-tooltip-color: var(--bs-white);
+        }
+    </style>
+</head>
+
+<body style="background-color: #f2f6f9;">
+
+    <nav class="navbar" style="background-color: #c3d6e4;">
+        <div class="container-fluid">
+            <span id="title" class="navbar-brand mb-0 h1" style="margin-left: 20px;">Video Player</span>
+            {% if selected_video %}
+            <h2 style="max-width: 60%;overflow-wrap: anywhere;">Now playing: {{ selected_video }}</h2>
+            {% else %}
+            <h2>please Select a Video</h2>
+            {% endif %}
+            <div class="d-flex">
+                <button type="button" class="btn btn-outline-primary" style="margin: 5px 20px 5px 20px;"
+                    data-bs-toggle="modal" data-bs-target="#manageVideoModal">
+                    Manage Videos
+                </button>
+                <button type="button" class="btn btn-outline-primary" style="margin: 5px 20px 5px 20px;"
+                    data-bs-toggle="modal" data-bs-target="#selectVideoModal">
+                    Select Video
+                </button>
+            </div>
+        </div>
+    </nav>
+    <hr style="margin-top: 0;">
+
+    <div style="margin: auto; margin-top: 20px; max-width: 70%;">
+        <div class="modal fade" id="selectVideoModal" tabindex="-1" aria-labelledby="selectVideoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="selectVideoModalLabel">Select a Video</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="video-form" action="/play" method="POST">
+                            <select id="videoSelect" multiple class="form-select" size=20 name="video_name"
+                                data-currently-selected="{{ selected_video }}">
+                                {% for video in video_list %}
+                                <option value="{{ video }}" {% if video==selected_video %}selected{% endif %}>{{
+                                    video.replace('/', ' / ') }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button form="video-form" type="submit" class="btn btn-primary">Load</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="manageVideoModal" tabindex="-1" aria-labelledby="manageVideoModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="manageVideoModalLabel">Select a Video</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="manage-form">
+                            <select id="videoManage" multiple class="form-select" size=20 name="video_manage"
+                                data-currently-selected="{{ selected_video }}">
+                                {% for video in video_list %}
+                                <option value="{{ video }}" {% if video==selected_video %}selected{% endif %}>{{
+                                    video.replace('/', ' / ') }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <form id="upload-form" action="/upload" method="POST" enctype="multipart/form-data">
+                            <div class="input-group mb-1">
+                                <input type="file" name="file" class="btn btn-primary"></input>
+                            </div>
+                            <div class="input-group mb-2">
+                                <span class="input-group-text" id="basic-addon1">Upload Path</span>
+                                <input type="text" name="upload_path" class="form-control" placeholder="/videos/..."
+                                    aria-label="/videos/..." aria-describedby="basic-addon1">
+                                <button type="submit" class="btn btn-success">Upload</button>
+                            </div>
+                        </form>
+                        <button id="delete-video-btn" type="button" class="btn btn-danger">Delete</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if selected_video %}
+        <video id="video-player" style="max-height: 75vh; width:100%" controls>
+            <source src="/static/{{ selected_video }}" type="video/mp4">
+            Your browser does not support HTML video.
+        </video>
+        {% endif %}
+
+        <div style="margin: auto; max-width: fit-content; margin-top: 10px;">
+            <div style="margin: auto; max-width: fit-content;" class="btn-group">
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="Play"
+                    class="btn btn-outline-secondary bi bi-play-fill" id="start-video"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="Pause"
+                    class="btn btn-outline-secondary bi bi-pause-fill" id="pause-video"></button>
+            </div>
+            <div style="margin: auto; max-width: fit-content;" class="btn-group">
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="previous Video"
+                    class="btn btn-outline-secondary bi bi-skip-backward-fill" id="previous-video"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="skip back 10s"
+                    class="btn btn-outline-secondary bi bi-rewind-fill" id="skip-back-10s"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="skip back 1s"
+                    class="btn btn-outline-secondary bi bi-skip-start-fill" id="skip-back-1s"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="skip forward 1s"
+                    class="btn btn-outline-secondary bi bi-skip-end-fill" id="skip-forward-1s"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="skip forward 10s"
+                    class="btn btn-outline-secondary bi bi-fast-forward-fill" id="skip-forward-10s"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="next Video"
+                    class="btn btn-outline-secondary bi bi-skip-forward-fill" id="next-video"></button>
+            </div>
+            <div style="margin: auto; max-width: fit-content;" class="btn-group">
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="start Cut Mark"
+                    class="btn btn-outline-secondary fa-solid fa-file-video" id="open-cut-mark"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="end Cut Mark"
+                    class="btn btn-outline-secondary fa-solid fa-clapperboard" id="close-cut-mark"></button>
+                <button type="button" data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="bottom"
+                    data-bs-custom-class="custom-tooltip" data-bs-title="Save Splits"
+                    class="btn btn-outline-success bi bi-check2-circle" id="ffmpeg-create-splits"></button>
+                <div id="loadingSpinner" class="spinner-border text-success" style="text-align: right; position: absolute; margin-left: 83px; margin-top: 3px;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div class="cut-group" style="margin-top: 10px;">
+                <span class="input-group-text">crop marks</span>
+                <textarea class="form-control" aria-label="crop"></textarea>
+            </div>
+            <div id="script-output"></div>
+        </div>
+    </div>
+</body>
+
+</html>
