@@ -1,3 +1,6 @@
+Of course, here's the `README.md` content presented as a code block:
+
+```markdown
 # Flask Video Cutter
 
 Flask Video Cutter is a sophisticated video control and editing web application built on top of Flask. It allows users to control video playback, skip through videos, mark sections for cutting, and manage a collection of video files.
@@ -63,7 +66,7 @@ Flask Video Cutter is a sophisticated video control and editing web application 
    flask run
    ```
 
-   Access the application via `http://127.0.0.1:5000/`.
+   Access the application via `http://0.0.0.0:5000/`.
 
 ## Usage
 
@@ -82,7 +85,6 @@ Thank those who contributed to the project or inspired its creation.
 ## License
 
 [MIT License](https://choosealicense.com/licenses/mit/)
+```
 
----
-
-Feel free to modify or expand upon any sections as necessary. I've added placeholders for sections like screenshots and acknowledgements, which you can update or remove based on your project's specifics.
+You can copy the above code block and place it in your repository's `README.md` file. Adjust any placeholders or sections as necessary for your project's specifics.
