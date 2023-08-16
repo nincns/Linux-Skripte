@@ -34,35 +34,35 @@ Flask Video Cutter is a sophisticated video control and editing web application 
 
 1. **Clone the Repository:**
 
-   ```bash
+   <code>
    git clone https://github.com/nincns/Linux-Skripte.git
    cd Linux-Skripte/Python/flask-video-cut
-   ```
+   </code>
 
 2. **Set Up a Virtual Environment (Recommended)**:
 
-   ```bash
+   <code>
    python3 -m venv venv
    source venv/bin/activate
-   ```
+   </code>
 
 3. **Install Required Dependencies:**
 
-   ```bash
+   <code>
    pip install -r requirements.txt
-   ```
+   </code>
 
    If a `requirements.txt` isn't provided, at least ensure Flask is installed:
 
-   ```bash
+   <code>
    pip install Flask
-   ```
+   </code>
 
 4. **Start the Flask Application:**
 
-   ```bash
+   <code>
    flask run
-   ```
+   </code>
 
    Access the application via `http://0.0.0.0:5000/`.
 
@@ -83,6 +83,6 @@ Thank those who contributed to the project or inspired its creation.
 ## License
 
 [MIT License](https://choosealicense.com/licenses/mit/)
-```
+</code>
 
 You can copy the above code block and place it in your repository's `README.md` file. Adjust any placeholders or sections as necessary for your project's specifics.
